@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "notes-application": "file:.."
+  }
+}

@@ -1,20 +1,18 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true, // Makes title required
-  // Removes leading/trailing spaces
+    required: true,
   },
   content: {
     type: String,
     required: true,
-
   }
 }, {
-  timestamps: true // Automatically adds createdAt and updatedAt fields
+  timestamps: true
 });
 
 const Note = mongoose.model("Note", noteSchema);
 
-module.exports = Note;
+export default Note;
