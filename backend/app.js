@@ -5,7 +5,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import connectDb from "./controllers/connectDb.js";
+import optionalAuth from "./middleware/optionalAuth.js";
+import authRouter from "./routes/auth.js";
 import router from "./router/routes.js";
+import autocompleteRouter from "./routes/autocomplete.js";
+import summarizeRouter from "./routes/summarize.js";
+import improveRouter from "./routes/improve.js";
 
 dotenv.config();
 
@@ -25,13 +30,18 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 app.use(express.json());
+app.use(optionalAuth);
 
 // API Routes
+app.use("/api/auth", authRouter);
 app.use("/api", router);
+app.use("/api", autocompleteRouter);
+app.use("/api", summarizeRouter);
+app.use("/api", improveRouter);
 
 // Serve static frontend files (for production)
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.resolve(__dirname, "../frontend/notes/dist");
+  const frontendPath = path.resolve(__dirname, "../frontend/dist");
 
   app.use(express.static(frontendPath));
 
