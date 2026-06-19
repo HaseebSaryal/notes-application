@@ -21,14 +21,17 @@ const PORT = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware
-if (process.env.NODE_ENV !== "production") {
-  app.use(
-    cors({
-      origin: "http://localhost:5173",
-    })
-  );
-}
+// ✅ CORS — always enabled (dev + production)
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://notes-application-one-omega.vercel.app",
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(optionalAuth);
 
