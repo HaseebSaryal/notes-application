@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
-const AUTOCOMPLETE_URL = "http://localhost:5000/api/autocomplete";
+import api from "../libs/axios";
 
 const AutocompleteTextarea = ({ value, onChange, placeholder, rows = 6, className = "" }) => {
   const [suggestion, setSuggestion] = useState("");
@@ -17,13 +16,7 @@ const AutocompleteTextarea = ({ value, onChange, placeholder, rows = 6, classNam
 
     const timeoutId = setTimeout(async () => {
       try {
-        const response = await fetch(AUTOCOMPLETE_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: currentText }),
-        });
-        if (!response.ok) throw new Error("failed");
-        const data = await response.json();
+        const { data } = await api.post("/autocomplete", { text: currentText });
         if (isActive) setSuggestion(data?.suggestion || "");
       } catch {
         if (isActive) setSuggestion("");
