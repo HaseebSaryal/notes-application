@@ -5,8 +5,6 @@ import { Link } from "react-router";
 import api from "../libs/axios";
 import AutocompleteTextarea from "../components/AutocompleteTextarea";
 
-const AUTOCOMPLETE_URL = "http://localhost:5000/api/autocomplete";
-
 const CreatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,14 +22,9 @@ const CreatePage = () => {
     const timeout = setTimeout(async () => {
       setSuggestionLoading(true);
       try {
-        const response = await fetch(AUTOCOMPLETE_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            text: `I am writing a note titled "${title}". Suggest what the content should look like. Be concise and practical. Match the language of the title (Roman Urdu or English).`
-          }),
+        const { data } = await api.post("/autocomplete", {
+          text: `I am writing a note titled "${title}". Suggest what the content should look like. Be concise and practical. Match the language of the title (Roman Urdu or English).`
         });
-        const data = await response.json();
         setTitleSuggestion(data?.suggestion || "");
       } catch {
         setTitleSuggestion("");
@@ -69,7 +62,7 @@ const CreatePage = () => {
       if (status === 429) {
         toast.error("Slow down! You're creating notes too fast", { duration: 4000, icon: "💀" });
       } else if (!error.response) {
-        toast.error("Cannot reach the backend server. Start it on http://localhost:5000");
+        toast.error("Cannot reach the backend server");
       } else {
         toast.error("Failed to create note");
       }
