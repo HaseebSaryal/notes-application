@@ -27,6 +27,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://notes-application-one-omega.vercel.app",
+      "https://notes.haseebsaryal.tech/"
     ],
     credentials: true,
   })
